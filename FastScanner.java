@@ -82,9 +82,9 @@ public class FastScanner {
             return stats;
         }
         // parse the text from the api
-        JsonObject profile = getStringAsJson(connection),
-                   bw = profile.getAsJsonObject("player").getAsJsonObject("stats").getAsJsonObject("Bedwars"),
-                   ach = profile.getAsJsonObject("player").getAsJsonObject("achievements");
+        JsonObject profile = getStringAsJson(connection).getAsJsonObject("player"),
+                   bw = profile.getAsJsonObject("stats").getAsJsonObject("Bedwars"),
+                   ach = profile.getAsJsonObject("achievements");
         // get players bedwars stats from json object
         JsonElement element = ach.get("bedwars_level");
         if (element == null) {
