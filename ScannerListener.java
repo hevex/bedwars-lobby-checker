@@ -7,8 +7,7 @@ import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
 import com.hev.bwhelper.FastScanner;
-import com.hev.bwhelper.utils.RenderUtils;
-import com.hev.bwhelper.utils.Utils;
+import com.hev.bwhelper.utils.*;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -26,6 +25,8 @@ public class ScannerListener {
     boolean reverse;
     // determine how far the animation has to be displaced
     int lineType;
+    // boolean to render esp
+    boolean renderESP;
 
     // timer instance
     Timer timer;
@@ -39,6 +40,7 @@ public class ScannerListener {
         this.display_time = display_time;
         reverse = false;
         lineType = 0;
+        renderESP = true;
     }
 
     public void init() {
@@ -54,6 +56,8 @@ public class ScannerListener {
                     // begin to slide-in the hud
                     reverse = true;
                     animateHUD.start();
+                    // stop rendering
+                    renderESP = false;
                 } else if (passed == display_time) {
                     // end scanner listener
                     finish();
@@ -108,7 +112,7 @@ public class ScannerListener {
 
     @SubscribeEvent
     public void onRenderWorld(RenderWorldLastEvent e) {
-        if (threatList == null || threatList.isEmpty() || !Utils.nullCheck()) return;
+        if (!renderESP || threatList == null || threatList.isEmpty() || !Utils.nullCheck()) return;
         for (EntityPlayer player : Utils.mc.theWorld.playerEntities) {
             if (player == Utils.mc.thePlayer) continue;
             if (threatList.contains(player.getName())) {
